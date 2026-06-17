@@ -18,18 +18,33 @@
 
 ## 快速开始
 
-1. 在 Claude Code 里输入 `/orchestrator`
-2. 描述你的需求
-3. Orch（你的主对话 Claude）拆解需求，后台启动循环
-4. 正常聊天，随时问进度
-5. 跑完后 Orch 展示结果。你确认 → 交付
+**1. 安装**
 
-```bash
-# 或者直接运行：
-python3 scripts/loop.py --config examples/sample-config.json
+把 GitHub 链接丢给 Claude Code，让它帮你安装：
+
+```
+把这个 skill 安装到本地：https://github.com/Gavin9902/orchestrator-ai
 ```
 
-首次使用时，如果任务需要多模态检查（图片、UI、截图），而当前模型不支持图片，Orch 会询问 API endpoint 和 key。配置存入 `~/.orchestrator-config.json`，下次自动用。
+Claude Code 会自动 clone 并链接到 `~/.claude/skills/`。
+
+**2. 召唤**
+
+```
+/orchestrator
+```
+
+**3. 聊需求**
+
+Orch 会引导你梳理清楚要做什么、怎么算好——但不会替你定标准。标准是你和 Orch 一起聊出来的。
+
+**4. 等结果**
+
+需求确认后，Orch 后台启动 loop.py + Agent Monitor，你可以继续聊别的或随时问进度。
+
+**5. 确认交付**
+
+跑完后 Orch 展示结果。你点头才算交付，不点头就改标准重来。
 
 ## 修改设置
 

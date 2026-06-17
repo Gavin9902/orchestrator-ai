@@ -18,18 +18,33 @@ Describe what you want. Orchestrator breaks it down, lets a Production Agent bui
 
 ## Quick Start
 
-1. In Claude Code, type `/orchestrator`
-2. Describe what you want
-3. Orch (your main Claude) decomposes the requirement and launches the loop in the background
-4. Chat freely while it runs — ask about progress anytime
-5. When it finishes, Orch shows you the results. You confirm → delivered.
+**1. Install**
 
-```bash
-# Or run directly:
-python3 scripts/loop.py --config examples/sample-config.json
+Give your Claude Code the GitHub link and let it handle installation:
+
+```
+Install this skill for me: https://github.com/Gavin9902/orchestrator-ai
 ```
 
-The first time your task needs multimodal checking (images, UI, screenshots) and your current model doesn't support images, Orch will ask for an API endpoint and key. Everything is saved to `~/.orchestrator-config.json` for next time.
+Claude Code will clone and link the skill into `~/.claude/skills/`.
+
+**2. Summon**
+
+```
+/orchestrator
+```
+
+**3. Talk through your requirements**
+
+Orch will guide you in clarifying what needs to be done and what "good" looks like — but won't set standards for you. You and Orch figure them out together.
+
+**4. Wait for results**
+
+Once requirements are confirmed, Orch launches loop.py + Agent Monitor in the background. Keep chatting or ask about progress anytime.
+
+**5. Approve delivery**
+
+Orch presents results when done. Nothing is delivered until you say yes. Change the standards and re-run if you want.
 
 ## Changing Settings
 
