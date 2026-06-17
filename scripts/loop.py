@@ -369,6 +369,14 @@ def main():
     criteria = config["criteria"]
     options = config.get("options", {})
 
+    # 合并用户全局配置（~/.orchestrator-config.json），任务级 options 优先
+    user_config_path = Path.home() / ".orchestrator-config.json"
+    if user_config_path.exists():
+        user_opts = json.loads(user_config_path.read_text(encoding="utf-8"))
+        for k, v in user_opts.items():
+            if k not in options:  # 任务级配置不覆盖
+                options[k] = v
+
     max_rounds = args.max_rounds or criteria.get("max_rounds", options.get("max_rounds", 3))
     production_model = options.get("production_model", "haiku")
     check_model = options.get("check_model", "opus")

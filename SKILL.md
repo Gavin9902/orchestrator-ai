@@ -51,6 +51,29 @@ description: 职责分离式 AI 质量保障系统。Orch 拆需求→生产Work
 
 ## 我的工作流程（Orch 操作手册）
 
+### 第零步：首次配置（仅第一次）
+
+如果是第一次使用，Orch 应该主动询问用户是否需要外部多模态检查模型：
+
+```
+Orch: "要不要配一个外部多模态模型做检查 Worker（如小米 MiMo）？
+       需要的话给我 API endpoint + key + model 名字，我存到 ~/.orchestrator-config.json。
+       不需要就跳过，默认用 Claude Sonnet 检查。"
+```
+
+用户提供后保存到 `~/.orchestrator-config.json`：
+```json
+{
+  "check_backend": "api",
+  "check_model": "mimo-vl-2.5",
+  "api_endpoint": "https://api.minimax.chat/v1/chat/completions",
+  "api_key": "sk-..."
+}
+```
+
+后续每次 `/orchestrator` 自动读取该文件，不再重复询问。
+用户随时可以说"更新 MiMo 配置"来修改。
+
 ### 第一步：拆需求
 
 你提需求后，我产出 **一个 config.json**（内含 task + checklist + criteria 三段），格式见 `references/schema.md`。
