@@ -127,6 +127,48 @@ def _extract_json(text: str) -> dict:
     return json.loads(text)
 
 
+def call_api(prompt: str, system_prompt: str, model: str,
+             api_endpoint: str, api_key: str,
+             output_dir: Path = None, label: str = "output",
+             json_schema: dict = None, timeout: int = 600) -> dict:
+    """调用 OpenAI 兼容 API（如小米 MiMo），返回解析后的 JSON。"""
+    import urllib.request
+    import urllib.error
+
+    messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": prompt}]
+    body = {"model": model, "messages": messages, "temperature": 0.3}
+    if json_schema:
+        body["response_format"] = {"type": "json_schema", "json_schema": {"name": "output", "schema": json_schema}}
+
+    req = urllib.request.Request(
+        api_endpoint,
+        data=json.dumps(body).encode("utf-8"),
+        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+    )
+
+    print(f"  [{label}] 调用 API --model {model} ...")
+    start = time.time()
+
+    try:
+        resp = urllib.request.urlopen(req, timeout=timeout)
+        raw = resp.read().decode("utf-8")
+        data = json.loads(raw)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"API HTTP {e.code}: {e.read().decode('utf-8')[:500]}")
+    except Exception as e:
+        raise RuntimeError(f"API 调用失败: {e}")
+
+    elapsed = time.time() - start
+    content = data["choices"][0]["message"]["content"]
+    print(f"  [{label}] 耗时 {elapsed:.1f}s, tokens={data.get('usage', {})}")
+
+    if output_dir:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / f"{label}_api_response.json").write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return _extract_json(content)
+
+
 def call_claude(prompt: str, system_prompt: str, model: str = "haiku",
                 output_dir: Path = None, label: str = "output",
                 json_schema: dict = None, bare: bool = True,
@@ -313,6 +355,10 @@ def main():
     max_rounds = args.max_rounds or criteria.get("max_rounds", options.get("max_rounds", 3))
     production_model = options.get("production_model", "haiku")
     check_model = options.get("check_model", "opus")
+    check_backend = options.get("check_backend", "claude")
+    production_backend = options.get("production_backend", "claude")
+    api_endpoint = options.get("api_endpoint", "")
+    api_key = options.get("api_key", "")
     bare = options.get("bare", True)
     worker_timeout = options.get("worker_timeout", 600)
     base_output_dir = Path(options.get("output_dir", "run_output"))
@@ -328,7 +374,7 @@ def main():
     print(f"═══ Orchestrator Loop 启动 ═══")
     print(f"最大轮次: {max_rounds}")
     print(f"生产模型: {production_model}")
-    print(f"检查模型: {check_model}")
+    print(f"检查模型: {check_model} ({check_backend})")
     print(f"隔离模式: {'bare (无网络)' if bare else 'full (可搜索)'}")
     print(f"输出目录: {base_output_dir}")
     print()
@@ -357,11 +403,19 @@ def main():
         else:
             try:
                 prod_schema = task.get("output_format", {}).get("schema")
-                production_result = call_claude(
-                    production_prompt, PRODUCTION_SYSTEM_PROMPT,
-                    model=production_model, output_dir=round_dir, label="production",
-                    json_schema=prod_schema, bare=bare, timeout=worker_timeout
-                )
+                if production_backend == "api":
+                    production_result = call_api(
+                        production_prompt, PRODUCTION_SYSTEM_PROMPT,
+                        model=production_model, api_endpoint=api_endpoint, api_key=api_key,
+                        output_dir=round_dir, label="production",
+                        json_schema=prod_schema, timeout=worker_timeout
+                    )
+                else:
+                    production_result = call_claude(
+                        production_prompt, PRODUCTION_SYSTEM_PROMPT,
+                        model=production_model, output_dir=round_dir, label="production",
+                        json_schema=prod_schema, bare=bare, timeout=worker_timeout
+                    )
                 print(f"  产出: {json.dumps(production_result, ensure_ascii=False)[:200]}...")
                 round_record["production_ok"] = True
             except Exception as e:
@@ -390,11 +444,19 @@ def main():
             round_record["check_ok"] = True
         else:
             try:
-                check_result = call_claude(
-                    check_prompt, CHECK_SYSTEM_PROMPT,
-                    model=check_model, output_dir=round_dir, label="check",
-                    json_schema=CHECK_SCHEMA, bare=bare, timeout=worker_timeout
-                )
+                if check_backend == "api":
+                    check_result = call_api(
+                        check_prompt, CHECK_SYSTEM_PROMPT,
+                        model=check_model, api_endpoint=api_endpoint, api_key=api_key,
+                        output_dir=round_dir, label="check",
+                        json_schema=CHECK_SCHEMA, timeout=worker_timeout
+                    )
+                else:
+                    check_result = call_claude(
+                        check_prompt, CHECK_SYSTEM_PROMPT,
+                        model=check_model, output_dir=round_dir, label="check",
+                        json_schema=CHECK_SCHEMA, bare=bare, timeout=worker_timeout
+                    )
                 print(f"  评分: total={check_result.get('overall', {}).get('total_score', '?')}/{check_result.get('overall', {}).get('max_total', '?')}")
                 round_record["check_ok"] = True
             except Exception as e:

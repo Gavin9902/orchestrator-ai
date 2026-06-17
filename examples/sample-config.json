@@ -92,7 +92,11 @@
 
   "options": {
     "production_model": "haiku",
+    "production_backend": "claude",
     "check_model": "sonnet",
+    "check_backend": "claude",
+    "api_endpoint": "https://api.minimax.chat/v1/chat/completions",
+    "api_key": "",
     "max_rounds": 3,
     "output_dir": "run_output",
     "bare": true,
