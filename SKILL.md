@@ -60,15 +60,19 @@ description: 职责分离式 AI 质量保障系统。Orch 拆需求→生产Work
 - checklist 里**不准出现**"8/10 以上算过"这类及格线
 - criteria 是纯机器规则，用 threshold/exact/regex/script/schema 表达
 
-### 第二步：启动 loop.py
+### 第二步：启动 loop.py + Agent Monitor
 
 ```bash
-# 后台运行，我不阻塞
+# 后台运行 loop.py，我不阻塞
 python3 scripts/loop.py --config <config.json>
-# 最后一行输出: LOOP_RESULT: PASS | round=1 | passed=3/3 | output=run_output/20260617_xxx/
 ```
 
-我用 Bash 工具的 `run_in_background` 参数启动，loop.py 在后台跑，我立刻回来继续跟你聊天。
+同时启动 Agent Monitor（默认行为，不需要用户要求）：
+```
+Agent 任务：每20秒读 progress.json + *_live.log，有变化就汇报。
+```
+
+loop.py 和 Monitor 都在后台跑，我立刻回来继续跟你聊天。
 
 ### 第三步：陪你等结果
 
@@ -165,13 +169,15 @@ loop.py 启动
 | judge 怎么判的 | `cat run_output/<ts>/round_N/judge_result.json` |
 | 最终结果 | `cat run_output/<ts>/FINAL_PASS.json` |
 
-### 智能方式（Agent Monitor，推荐）
+### 智能方式（Agent Monitor，默认启用）
 
-loop.py 启动后，另起一个 Agent subagent 专职监控：
+loop.py 启动后，**自动**另起一个 Agent subagent 专职监控：
 
 ```
 Agent 任务：每20秒读 progress.json + *_live.log，有变化就汇报。
 ```
+
+Orch 不应等待 Monitor 结果，而是继续与你交互。等 Monitor 完成通知或用户主动询问时汇报进度。
 
 Agent 能理解输出内容，汇报比 status.py 更丝滑，比如"生产Worker已搜到5条小红书观点"。
 
