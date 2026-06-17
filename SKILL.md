@@ -51,28 +51,36 @@ description: 职责分离式 AI 质量保障系统。Orch 拆需求→生产Work
 
 ## 我的工作流程（Orch 操作手册）
 
-### 第零步：首次配置（仅第一次）
+### 第零步：按需配置多模态检查
 
-如果是第一次使用，Orch 应该主动询问用户是否需要外部多模态检查模型：
+Orch 先分析需求，再决定是否要外部模型：
 
 ```
-Orch: "要不要配一个外部多模态模型做检查 Worker（如小米 MiMo）？
-       需要的话给我 API endpoint + key + model 名字，我存到 ~/.orchestrator-config.json。
-       不需要就跳过，默认用 Claude Sonnet 检查。"
+用户需求
+  │
+  ▼
+需要看图检查？（UI/海报/截图/设计稿...）
+  │
+  ├─ 否 → 跳过，默认 Claude Sonnet 做检查 Worker
+  │
+  └─ 是 → 当前 Claude Code 模型支持多模态？
+            │
+            ├─ 是（如 Claude Opus/Sonnet 原生支持图片）
+            │     → 直接用 claude -p 启检查 Worker，不额外配置
+            │
+            └─ 否（如 DeepSeek、Haiku 等不支持图片）
+                  → Orch 询问用户：
+                    "检查 Worker 需要看图片，当前模型不支持多模态。
+                     给我一个多模态 API 的 endpoint + key + model：
+                     - 小米 MiMo
+                     - OpenAI GPT-4o
+                     - 其他 OpenAI 兼容接口"
+                  → 保存到 ~/.orchestrator-config.json
 ```
 
-用户提供后保存到 `~/.orchestrator-config.json`：
-```json
-{
-  "check_backend": "api",
-  "check_model": "mimo-vl-2.5",
-  "api_endpoint": "https://api.minimax.chat/v1/chat/completions",
-  "api_key": "sk-..."
-}
-```
+配置写入后，loop.py 自动设置 `check_backend: "api"`，检查 Worker 走外部多模态模型。此后同类型任务不再询问。
 
-后续每次 `/orchestrator` 自动读取该文件，不再重复询问。
-用户随时可以说"更新 MiMo 配置"来修改。
+用户随时可更新：`更新多模态配置`
 
 ### 第一步：拆需求
 
