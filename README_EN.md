@@ -2,9 +2,17 @@
 
 # Orchestrator
 
-![Orchestrator Pitch](pitch.gif)
-
 A Claude Code skill for reliable AI output. Separates production, blind review, and automated judgment into independent workers. No AI model is both player and referee.
+
+> "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
+>
+> "AI gets you 70% of the way. The last 30% is just as hard. Trust is declining." — **Addy Osmani**, Google Chrome Engineering Director.
+>
+> "Spending more time debugging AI output than if they coded it themselves." — Stack Overflow 2025 Survey. Trust dropped from 40% → **29%**.
+
+**The problem isn't model capability. It's that nobody checks the output.**
+
+![Orchestrator Pitch](pitch.gif)
 
 > "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
 >

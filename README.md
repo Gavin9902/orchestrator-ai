@@ -2,9 +2,17 @@
 
 # Orchestrator
 
-![Orchestrator Pitch](pitch.gif)
-
 一个 Claude Code skill。让 AI 产出可靠结果——把生产、盲审、判分拆成三个独立 Worker。不让任何 AI 同时当运动员和裁判。
+
+> "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。vibe coding 发明者。
+>
+> "AI 能搞定 70%，剩下 30% 一样难。信任度在下降。" — **Addy Osmani**，Google Chrome 工程总监。
+>
+> "花在修 AI bug 上的时间比自己写还多。" — Stack Overflow 2025 调查，信任度 40% → **29%**。
+
+**问题不在模型不够强。在没人帮模型检查。**
+
+![Orchestrator Pitch](pitch.gif)
 
 > "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。vibe coding 发明者。
 >
