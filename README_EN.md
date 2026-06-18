@@ -12,7 +12,7 @@ A Claude Code skill for reliable AI output. Separates production, blind review, 
 
 **The problem isn't model capability. It's that nobody checks the output.**
 
-![Orchestrator Pitch](pitch.gif)
+![Orchestrator Pitch](pitch_en.gif)
 
 > "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
 >
