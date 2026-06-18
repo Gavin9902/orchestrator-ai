@@ -2,6 +2,8 @@
 
 # Orchestrator
 
+![Orchestrator Pitch](pitch.gif)
+
 一个 Claude Code skill。让 AI 产出可靠结果——把生产、盲审、判分拆成三个独立 Worker。不让任何 AI 同时当运动员和裁判。
 
 > "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。vibe coding 发明者。

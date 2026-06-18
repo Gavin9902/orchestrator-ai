@@ -8,19 +8,37 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Noto Sans SC",sans-serif;
-  background:#090a0f;color:#e4e4e7;scroll-behavior:smooth;overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;
+  background:#090a0f;color:#e4e4e7;
+  -webkit-font-smoothing:antialiased;text-rendering:geometricPrecision;line-height:1.7;
 }
-.slide{
+
+/* Hero Section */
+.hero{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:80px 60px;border-bottom:1px solid #1a1a24;
+  padding:80px 40px;border-bottom:1px solid #1a1a24;
+  text-align:center;position:relative;overflow:hidden;
 }
-.inner{max-width:960px;width:100%}
-h1{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:900;line-height:1.15;letter-spacing:-0.02em;margin-bottom:20px;color:#fafafa}
-h2{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;letter-spacing:-0.015em;margin-bottom:24px;color:#f4f4f5}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#e94560 0%,#f59e0b 50%,#3fb950 100%)}
+.hero-inner{max-width:860px}
+.hero h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:900;line-height:1.15;letter-spacing:-0.02em;margin-bottom:16px;color:#fafafa}
+.hero .sub{font-size:1.15rem;color:#71717a;margin-bottom:10px}
+.hero .accent{color:#e94560}
+.hero .tag-row{margin-bottom:20px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.hero .tag{display:inline-block;padding:4px 10px;border-radius:8px;font-size:0.78rem;font-weight:700;margin:2px}
+.tag.red{background:#451a20;color:#f87171;border:1px solid #5c2525}
+.tag.amber{background:#2d2010;color:#fbbf24;border:1px solid #4a3510}
+
+/* Sections */
+.section{
+  padding:80px 40px;border-bottom:1px solid #1a1a24;
+}
+.section-inner{max-width:960px;margin:0 auto}
+h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-0.015em;margin-bottom:20px;color:#f4f4f5}
+h3{font-size:1rem;font-weight:700;color:#a1a1aa;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px}
 .accent{color:#e94560}
 .muted{color:#71717a}
 
+/* Quotes */
 .quote{
   background:#111118;border-left:3px solid #e94560;border-radius:0 12px 12px 0;
   padding:20px 24px;margin:14px 0;font-size:0.95rem;color:#a1a1aa;line-height:1.65;
@@ -28,22 +46,30 @@ h2{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;letter-spacing:-0.015em;ma
 .quote .author{font-size:0.82rem;color:#71717a;margin-top:6px;font-style:normal}
 .quote .author strong{color:#d4d4d8}
 
+/* Grid */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
 .card{
   background:#111118;border:1px solid #1e1e2a;border-radius:20px;padding:36px 32px;
 }
 .card.bad{border-color:#451a20}
 .card.good{border-color:#1a3520}
 
+/* Features */
+.feature{background:#111118;border:1px solid #1e1e2a;border-radius:14px;padding:20px}
+.feature .label{font-size:0.82rem;color:#71717a;margin-bottom:4px}
+.feature .name{font-weight:700;color:#fafafa;font-size:0.95rem}
+
+/* Bar group */
 .bar-group{display:flex;gap:10px;justify-content:center;margin:16px 0;align-items:flex-end}
 .bar-col{text-align:center;font-size:0.68rem;color:#71717a}
 .bar-col .block{width:48px;border-radius:5px;margin-bottom:4px}
 .bar-col .block.fail{background:#451a20}
 .bar-col .block.pass{background:#1a3520}
 .bar-col .block.star{background:#1a3520;box-shadow:0 0 10px #4ade8040}
+.big-num{font-size:3.5rem;font-weight:900;letter-spacing:-0.03em;line-height:1.1}
 
-.big-num{font-size:3.5rem;font-weight:900;letter-spacing:-0.03em}
-
+/* Flow */
 .flow{display:flex;align-items:center;gap:16px;margin:28px 0;flex-wrap:wrap}
 .flow-box{
   background:#111118;border:1px solid #1e1e2a;border-radius:16px;
@@ -51,46 +77,94 @@ h2{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:800;letter-spacing:-0.015em;ma
   flex:1;min-width:120px;
 }
 .flow-arrow{color:#e94560;font-size:1.3rem;font-weight:300}
-code{background:#1a1a24;padding:3px 10px;border-radius:4px;font-size:0.9em;font-family:"SF Mono","Fira Code",monospace}
 
-.cta{display:inline-block;margin-top:20px;padding:14px 40px;background:#e94560;color:#fff;border-radius:24px;font-weight:700;font-size:1rem;text-decoration:none;transition:transform .2s,box-shadow .2s}
-.cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px #e9456040}
+/* Steps */
+.steps{list-style:none;margin-top:20px;counter-reset:step}
+.steps li{
+  counter-increment:step;display:flex;align-items:flex-start;gap:16px;
+  margin-bottom:14px;padding:16px 20px;background:#111118;border-radius:12px;border:1px solid #1e1e2a;
+}
+.steps li::before{
+  content:counter(step);background:#e94560;color:#fff;width:32px;height:32px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.85rem;flex-shrink:0;
+}
 
-.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;font-size:0.85rem;color:#a1a1aa}
-.checks div{background:#111118;border-radius:10px;padding:16px;border:1px solid #1e1e2a}
+/* Comparison */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.compare-card{padding:28px}
+.compare-card h4{font-size:1.05rem;font-weight:700;margin-bottom:14px}
+
+/* Code block */
+.code-block{
+  background:#111118;border:1px solid #1e1e2a;border-radius:10px;
+  padding:16px 20px;font-family:"SF Mono","Fira Code",monospace;font-size:0.85rem;
+  color:#a1a1aa;overflow-x:auto;line-height:1.8;
+}
+.code-block code{background:none;padding:0;color:inherit}
+
+/* Table */
+.spec-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:0.9rem}
+.spec-table td{padding:8px 0;border-bottom:1px solid #1a1a24}
+.spec-table td:first-child{color:#71717a;width:40%}
+.spec-table td:last-child{color:#e4e4e7}
+
+/* Footer */
+.footer{text-align:center;padding:40px 20px;color:#3f3f46;font-size:0.8rem;border-top:1px solid #1a1a24}
+.footer a{color:#71717a}
 
 @media(max-width:768px){
-  .slide{padding:60px 24px}.grid2,.flow,.checks{all:unset;display:flex;flex-direction:column;gap:16px;margin-top:16px}
-  h1{font-size:1.8rem}h2{font-size:1.4rem}.big-num{font-size:2.5rem}
-  .flow .flow-arrow{transform:rotate(90deg);margin:4px 0}
+  .grid2,.compare,.grid3{grid-template-columns:1fr}
+  .flow{flex-direction:column}
+  .flow-arrow{transform:rotate(90deg);margin:4px 0}
+  .section{padding:48px 20px}
+  .hero{padding:60px 20px}
+  h2{font-size:1.5rem}
 }
 </style>
 </head>
 <body>
 
-<!-- 1: 问题 -->
-<section class="slide">
-<div class="inner">
+<!-- HERO -->
+<section class="hero">
+<div class="hero-inner">
+  <div class="tag-row">
+    <span class="tag red">Stack Overflow 2025</span>
+    <span class="tag amber">信任度 29%</span>
+    <span class="tag red">AI 70% 问题</span>
+  </div>
   <h1>AI 写代码<span class="accent">越来越快</span><br>但<span class="accent">越来越没人信</span></h1>
+  <p class="sub">"They just don't work. It's slop." — <strong style="color:#e4e4e7">Andrej Karpathy</strong>，OpenAI 联合创始人</p>
+  <p class="sub">问题不在模型不够强。在<span style="color:#e4e4e7">没人帮模型检查</span>。</p>
+</div>
+</section>
+
+<!-- QUOTES -->
+<section class="section">
+<div class="section-inner">
+  <h3>他们说的不是"AI 不好"。他们说——</h3>
+  <h2>行业领袖的<span class="accent">原话</span></h2>
+
   <div class="quote">
     "They just don't work. It's slop. The industry is pretending this is amazing, and it's not."
-    <div class="author">&mdash; <strong>Andrej Karpathy</strong>，OpenAI 联合创始人。vibe coding 发明者。<span style="color:#e94560">他自己做项目全程手写代码</span>，因为 AI "just didn't work well enough"。Dwarkesh Podcast，2025.10</div>
+    <div class="author">&mdash; <strong>Andrej Karpathy</strong>，OpenAI 联合创始人，vibe coding 发明者。他自己做项目<span style="color:#e94560">全程手写代码</span>，因为 AI "just didn't work well enough"。Dwarkesh Podcast，2025.10</div>
   </div>
   <div class="quote">
     "AI can get you most of the way, but not all the way. It's deceptively convincing. Trust is surprisingly low and declining."
     <div class="author">&mdash; <strong>Addy Osmani</strong>，Google Chrome 工程总监。提出 <span style="color:#e94560">"AI 70% 问题"</span>——AI 产出 70% 的代码，剩下 30% 一样难。</div>
   </div>
-  <div class="quote" style="border-color:#f59e0b">
+  <div class="quote">
     "Spending more time debugging AI output than if they coded it themselves."
-    <div class="author">&mdash; <strong>Erin Yepis</strong>，Stack Overflow 高级分析师。2025 调查：开发者 AI 信任度 <span style="color:#f59e0b">40% → 29%</span>。</div>
+    <div class="author">&mdash; <strong>Erin Yepis</strong>，Stack Overflow 高级分析师。2025 调查：开发者 AI 信任度 <span style="color:#e94560">40% → 29%</span>。45% 最烦"看起来对但有小错"。</div>
   </div>
 </div>
 </section>
 
-<!-- 2: 根因 -->
-<section class="slide">
-<div class="inner">
-  <h2>根因：AI <span class="accent">又当运动员又当裁判</span></h2>
+<!-- ROOT CAUSE -->
+<section class="section">
+<div class="section-inner">
+  <h3>根因</h3>
+  <h2>AI <span class="accent">又当运动员又当裁判</span></h2>
   <div class="grid2">
     <div class="card bad">
       <div style="font-size:1.2rem;font-weight:700;color:#f87171;margin-bottom:16px">现在的做法</div>
@@ -100,15 +174,14 @@ code{background:#1a1a24;padding:3px 10px;border-radius:4px;font-size:0.9em;font-
         "对的。"<br>
       </p>
       <p style="color:#f87171;margin-top:12px;font-size:0.82rem">同一个模型 → 下意识放水 → 看着对就行</p>
-      <p style="color:#52525b;margin-top:6px;font-size:0.78rem">Claude 自己承认："I prioritize speed over correctness"<br>&mdash; GitHub Issue #14987</p>
     </div>
     <div class="card good">
       <div style="font-size:1.2rem;font-weight:700;color:#4ade80;margin-bottom:16px">应该的做法</div>
       <p style="color:#a1a1aa;line-height:2.2;font-size:0.95rem">
         "我做完了。"<br>
-        "我查一下...3 处不对。"<br>
+        "我看看... 3 处不对。"<br>
         "修好了。"<br>
-        "再查...过了。"<br>
+        "再查... 过了。<br>
       </p>
       <p style="color:#4ade80;margin-top:12px;font-size:0.82rem">三个人。互相不知道标准。谁也没法放水。</p>
     </div>
@@ -116,10 +189,12 @@ code{background:#1a1a24;padding:3px 10px;border-radius:4px;font-size:0.9em;font-
 </div>
 </section>
 
-<!-- 3: 方案 + 证据 -->
-<section class="slide">
-<div class="inner">
-  <h2>同模型同任务。加了盲审就 <span class="accent">14% → 100%</span>。</h2>
+<!-- EXPERIMENT -->
+<section class="section">
+<div class="section-inner">
+  <h3>同一个 DeepSeek，同一个任务</h3>
+  <h2>加了盲审就 <span class="accent">14% → 100%</span></h2>
+  <p class="muted" style="margin-bottom:16px">生成一周 21 餐食谱。每天热量 1800-2200 kcal。蛋白:碳水:脂肪 = 30:40:30。</p>
   <div class="grid2">
     <div class="card bad" style="padding:28px 24px">
       <div style="font-weight:700;color:#f87171;margin-bottom:16px;font-size:1rem">直接生成 · 没人检查</div>
@@ -133,7 +208,7 @@ code{background:#1a1a24;padding:3px 10px;border-radius:4px;font-size:0.9em;font-
         <div class="bar-col"><div class="block fail" style="height:30px"></div>日</div>
       </div>
       <div class="big-num" style="color:#f87171;text-align:center">1/7</div>
-      <p style="color:#71717a;text-align:center;margin-top:4px;font-size:0.85rem">蛋白/碳水/脂肪到处飘</p>
+      <p style="color:#71717a;text-align:center;margin-top:4px;font-size:0.85rem">蛋白/碳水/脂肪到处飘<br>看着像模像样，一算全崩</p>
     </div>
     <div class="card good" style="padding:28px 24px">
       <div style="font-weight:700;color:#4ade80;margin-bottom:16px;font-size:1rem">Orchestrator · 检查 Worker 逐条验算</div>
@@ -150,33 +225,89 @@ code{background:#1a1a24;padding:3px 10px;border-radius:4px;font-size:0.9em;font-
       <p style="color:#71717a;text-align:center;margin-top:4px;font-size:0.85rem">第1轮被盲审打回 → 修好通过</p>
     </div>
   </div>
-  <div class="flow" style="margin-top:32px">
-    <div class="flow-box" style="border-color:#f59e0b30"><span style="color:#fbbf24">生产</span><br><span class="muted" style="font-size:0.75rem">不知标准</span></div>
+  <p style="text-align:center;margin-top:20px;color:#d4d4d8;font-weight:700">同一个模型。14% → 100%。差的不在模型，在有没有盲审。</p>
+</div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section">
+<div class="section-inner">
+  <h3>怎么做到的</h3>
+  <h2>三权分立。放行判定<span class="accent">只由代码做</span>。</h2>
+  <div class="flow">
+    <div class="flow-box" style="border-color:#f59e0b30"><span style="color:#fbbf24">生产 Worker</span><br><span class="muted" style="font-size:0.75rem">只管做，不知标准</span></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-box" style="border-color:#3b82f630"><span style="color:#60a5fa">检查</span><br><span class="muted" style="font-size:0.75rem">不知及格线</span></div>
+    <div class="flow-box" style="border-color:#3b82f630"><span style="color:#60a5fa">检查 Worker</span><br><span class="muted" style="font-size:0.75rem">只管查，不知及格线</span></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-box" style="border-color:#4ade8030"><span style="color:#4ade80">代码判分</span><br><span class="muted" style="font-size:0.75rem">零 AI</span></div>
+    <div class="flow-box" style="border-color:#4ade8030"><span style="color:#4ade80">judge.py</span><br><span class="muted" style="font-size:0.75rem">纯代码判分，零 AI</span></div>
     <div class="flow-arrow">&rarr;</div>
-    <div class="flow-box" style="border-color:#e9456030"><span style="color:#f87171">你确认</span><br><span class="muted" style="font-size:0.75rem">最后闸门</span></div>
+    <div class="flow-box" style="border-color:#e9456030"><span style="color:#f87171">你</span><br><span class="muted" style="font-size:0.75rem">最后闸门</span></div>
   </div>
 </div>
 </section>
 
-<!-- 4: CTA -->
-<section class="slide">
-<div class="inner" style="text-align:center">
-  <h2 style="margin-bottom:24px">三行命令。三个角色。<br>你只做<span class="accent">最后一道确认</span>。</h2>
-  <div class="checks">
-    <div><div style="font-weight:800;color:#fafafa;margin-bottom:6px;font-size:1rem">/orchestrator</div><span class="muted">Claude Code 里召唤</span></div>
-    <div><div style="font-weight:800;color:#fafafa;margin-bottom:6px;font-size:1rem">聊需求</div><span class="muted">Orch 引导你理清标准</span></div>
-    <div><div style="font-weight:800;color:#fafafa;margin-bottom:6px;font-size:1rem">等结果</div><span class="muted">后台全自动 + 实时监控</span></div>
-  </div>
-  <div style="margin-top:36px">
-    <code style="font-size:1rem">github.com/Gavin9902/orchestrator-ai</code>
-    <p style="color:#52525b;margin-top:10px;font-size:0.82rem">MIT · Python 3.12+ · Claude Code CLI · 支持多模态（MiMo/GPT-4o）</p>
+<!-- WHAT YOU GET -->
+<section class="section">
+<div class="section-inner">
+  <h3>你会得到什么</h3>
+  <h2>描述需求。<span class="accent">你只管确认</span>。</h2>
+  <div class="grid3">
+    <div class="feature"><div class="label">生产 Agent</div><div class="name">执行任务，不知道验收标准</div></div>
+    <div class="feature"><div class="label">检查 Agent</div><div class="name">对照检查项打分，不知道及格线</div></div>
+    <div class="feature"><div class="label">判官（纯 Python）</div><div class="name">拿打分结果比对硬性条件</div></div>
+    <div class="feature"><div class="label">自动重试</div><div class="name">失败反馈回生产，最多 3 轮</div></div>
+    <div class="feature"><div class="label">Agent Monitor</div><div class="name">默认启动，实时监控进度</div></div>
+    <div class="feature"><div class="label">多模态</div><div class="name">接入外部视觉模型查图片/UI</div></div>
   </div>
 </div>
 </section>
+
+<!-- QUICK START -->
+<section class="section">
+<div class="section-inner">
+  <h3>快速开始</h3>
+  <h2>你什么都不用管。等着确认就行。</h2>
+  <ol class="steps">
+    <li><div><strong>安装</strong><br><span class="muted">把 GitHub 链接丢给 Claude Code：</span><br><div class="code-block" style="margin-top:8px">把这个 skill 安装到本地：https://github.com/Gavin9902/orchestrator-ai</div></div></li>
+    <li><div><strong>召唤</strong><br><div class="code-block" style="margin-top:8px">/orchestrator</div></div></li>
+    <li><div><strong>聊需求</strong><br><span class="muted">Orch 引导你梳理清楚要做什么、怎么算好。标准是你和 Orch 一起聊出来的。</span></div></li>
+    <li><div><strong>等结果</strong><br><span class="muted">Orch 后台启动 loop.py + Agent Monitor。你聊别的、问进度，都行。</span></div></li>
+    <li><div><strong>确认交付</strong><br><span class="muted">跑完 Orch 展示结果。你点头才算交付。</span></div></li>
+  </ol>
+</div>
+</section>
+
+<!-- SETTINGS -->
+<section class="section">
+<div class="section-inner">
+  <h3>配置</h3>
+  <h2>直接告诉 Orch，不用改文件</h2>
+  <div class="grid2">
+    <div class="code-block" style="margin-top:0;line-height:2">
+      "生产用 Haiku，检查用 Opus"<br>
+      "重试改成 5 轮"<br>
+      "更新多模态 API key"<br>
+      "显示当前配置"
+    </div>
+    <div style="margin-top:16px">
+      <h4 style="color:#e4e4e7;margin-bottom:10px;font-weight:700">检查项设计原则</h4>
+      <table class="spec-table">
+        <tr><td>"代码质量好"</td><td><span style="color:#f87171">❌</span> 差</td></tr>
+        <tr><td>"变量用 snake_case，函数 ≤ 20 行"</td><td><span style="color:#4ade80">✅</span> 好</td></tr>
+        <tr><td>"设计好看"</td><td><span style="color:#f87171">❌</span> 差</td></tr>
+        <tr><td>"卡片圆角 12px，断点 768px"</td><td><span style="color:#4ade80">✅</span> 好</td></tr>
+        <tr><td>"读起来流畅"</td><td><span style="color:#f87171">❌</span> 差</td></tr>
+        <tr><td>"平均句长 &lt; 30 字"</td><td><span style="color:#4ade80">✅</span> 好</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <a href="https://github.com/Gavin9902/orchestrator-ai">github.com/Gavin9902/orchestrator-ai</a> · MIT · Python 3.12+ · Claude Code CLI
+</div>
 
 </body>
 </html>

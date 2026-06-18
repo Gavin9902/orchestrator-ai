@@ -2,6 +2,8 @@
 
 # Orchestrator
 
+![Orchestrator Pitch](pitch.gif)
+
 A Claude Code skill for reliable AI output. Separates production, blind review, and automated judgment into independent workers. No AI model is both player and referee.
 
 > "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
