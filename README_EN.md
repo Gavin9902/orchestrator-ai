@@ -1,111 +1,109 @@
 **English** | [中文](README.md)
 
-# Orchestrator
+# Orchestrator v2.0 · Worker-Checker Couple
 
-A Claude Code skill for reliable AI output. Separates production, blind review, and automated judgment into independent workers. No AI model is both player and referee.
+> AI Quality Assurance System 2.0. Upgrades v1's "one Worker does everything" to "multiple Worker-Checker Couples working in parallel."
+> File-based handoffs between Workers. loop.py as pure-code scheduler. Three-layer anti-cheat.
 
-> "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
+> "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder.
 >
-> "AI gets you 70% of the way. The last 30% is just as hard. Trust is declining." — **Addy Osmani**, Google Chrome Engineering Director.
->
-> "Spending more time debugging AI output than if they coded it themselves." — Stack Overflow 2025 Survey. Trust dropped from 40% → **29%**.
+> "AI gets you 70% of the way. The last 30% is just as hard." — **Addy Osmani**, Google Chrome Engineering Director.
 
 **The problem isn't model capability. It's that nobody checks the output.**
 
 ![Orchestrator Pitch](pitch_en.gif)
 
-> "They just don't work. It's slop." — **Andrej Karpathy**, OpenAI co-founder. Inventor of vibe coding.
->
-> "AI gets you 70% of the way. The last 30% is just as hard. Trust is declining." — **Addy Osmani**, Google Chrome Engineering Director.
->
-> "Spending more time debugging AI output than if they coded it themselves." — Stack Overflow 2025 Survey. Trust dropped from 40% → **29%**.
+## v2.0 vs v1.0
 
-**The problem isn't model capability. It's that nobody checks the output.**
+| Dimension | v1.0 | v2.0 |
+|-----------|------|------|
+| Worker granularity | One Worker for everything | Multiple minimal Couples |
+| Scheduling | Orch schedules directly | loop.py generates instructions → Orch executes mechanically |
+| Task decomposition | Orch decomposes | PM Couple decomposes |
+| Parallelism | Not supported | Same-layer Couples run in parallel |
+| File handoff | Not required | Enforced file-path handoff |
+| Orch permissions | Full access | Only translate + relay + present |
+| Anti-cheat | Basic | Three-layer defense (narrative + structural + verification) |
+| Multi-platform | Claude Code only | CodeBuddy / Claude Code / Codex CLI / Generic |
 
-## What You Get
+## Core Philosophy
 
-Describe what you want. Orch decomposes, Production Agent builds, Check Agent scores blind, and the code judge (`judge.py`) decides pass or fail. Failed rounds feed back for retry. You only confirm at the end.
+> One Worker does one kind of thing, uses one capability, communicates only via files.
 
-- **Production Agent** — executes tasks, never sees acceptance criteria
-- **Check Agent** — scores against a checklist, doesn't know the passing threshold
-- **Judge (pure Python)** — compares scores against hard criteria. The only thing that can say "pass"
-- **Auto-retry** — failed feedback goes back to production, up to 3 rounds
-- **Agent Monitor** — enabled by default, real-time progress reporting
-- **Full audit trail** — every round's output, scores, and rulings saved to disk
-- **Multimodal** — plug in external vision models (MiMo, GPT-4o)
+```
+User → Orch (Messenger) → loop.py (Architect) → Parallel Couples
+                                                   ├── Couple A: Prod Worker → Check Worker → judge.py
+                                                   ├── Couple B: Prod Worker → Check Worker → judge.py
+                                                   └── Couple C: Prod Worker → Check Worker → judge.py
+```
 
-## You do one thing: confirm.
+**The Messenger's Compact**: Orch is not "restricted" — it has willingly accepted a contract. Cannot create. Cannot judge. Cannot plan. Only deliver.
+
+## Multi-Platform Support
+
+The skill auto-detects your platform on load:
+
+| Platform | Status |
+|----------|--------|
+| CodeBuddy | ✅ Ready |
+| Claude Code | ✅ Ready |
+| OpenAI Codex CLI | ✅ Ready |
+| Other / Unknown | 🌱 Self-growing (Orch probes tools and maps dynamically) |
+
+## Quick Start
 
 **1. Install**
 
-Give Claude Code the link:
+Give the GitHub link to your AI coding assistant:
 
 ```
-Install this skill for me: https://github.com/Gavin9902/orchestrator-ai
+Install this skill: https://github.com/Gavin9902/orchestrator-ai
 ```
 
 **2. Summon**
 
 ```
-/orchestrator
+/orch-worker-couple
 ```
+
+Or trigger words: `couple`, `worker-couple`, `parallel Worker`
 
 **3. Talk through requirements**
 
-Orch guides you in clarifying what needs to be done and what "good" means.
+Orch guides you through clarifying what needs to be done. PM Couple auto-decomposes the task graph.
 
 **4. Wait**
 
-Orch launches loop.py + Agent Monitor in background. Chat freely, check progress anytime.
+loop.py schedules parallel Couples. Check progress anytime.
 
 **5. Approve**
 
-Orch presents results. Nothing is delivered until you say yes.
+All Couples pass judge.py review → Orch presents results. Nothing is delivered until you confirm.
 
-## See an Example
+## Architecture Docs
 
-Same DeepSeek V4 Flash model. Same task: generate a 7-day meal plan with 21 meals. Daily calories 1800-2200 kcal. Protein:Carbs:Fat = 30:40:30.
+| Doc | Content |
+|-----|---------|
+| `core/ARCHITECTURE.md` | Role model, anti-cheat system, Worker splitting principles |
+| `core/PROTOCOLS.md` | Data formats, Action types, state machine, loop.py interface |
+| `codebuddy/SKILL.md` | CodeBuddy platform-specific version |
+| `claude-code/SKILL.md` | Claude Code platform-specific version |
+| `codex/SKILL.md` | Codex CLI platform-specific version |
+| `generic/SKILL.md` | Generic version (self-growing) |
 
-### Direct generation (no QA)
-
-DeepSeek outputs directly. **1 out of 7 days passes** macro ratio checks. Protein drifts to 33%, carbs and fat ratios all over the place. Looks reasonable. Math doesn't check out.
-
-### /orchestrator (with blind review)
-
-Production Worker generates → Check Worker verifies every calorie and macro ratio → Round 1 format error **caught and rejected** → feedback → Production fixes → Round 2: **7/7 all pass**. All 21 meals verified.
+## Three-Layer Anti-Cheat
 
 ```
-              Direct         /orchestrator
-Pass rate      1/7 (14%)      7/7 (100%)
-Macro errors   6 days          0 days
-Calorie math   unchecked      21/21 verified
-Self-awareness none           Check Worker scored 18/18
+🪄 Layer 1 · Narrative — Messenger's Compact + Five Breaths + Urge Protocol
+🔒 Layer 2 · Structural — File handoff + Context isolation + Mutual unawareness
+🔐 Layer 3 · Verification — action_hash + orch_receipt + checksum + .lock
 ```
 
-**Same model. 14% → 100%. The difference isn't the model. It's the blind review.**
+Covers 20 cheat paths. See `core/ARCHITECTURE.md` for details.
 
-## Changing Settings
+## v1.0 Archive
 
-Tell Orch in plain language:
-
-- "Use Haiku for production, Opus for checking"
-- "Retry up to 5 rounds"
-- "Update the multimodal API key"
-- "Show current settings"
-
-## Checklist Design
-
-Define what "good" means. **Quantify everything. Minimize subjective judgment.**
-
-| ❌ Bad | ✅ Good |
-|--------|------|
-| "Good code quality" | "Variables use snake_case, functions ≤ 20 lines, no magic numbers" |
-| "Looks nice" | "Card radius 12px, shadow 0 2px 8px rgba(0,0,0,0.08), breakpoint 768px" |
-| "Flows well" | "Average sentence < 30 chars, transitions between paragraphs" |
-
-## Requirements
-
-Python 3.12+ · [Claude Code](https://claude.ai/code) CLI
+v1.0 (original orchestrator) is preserved in the `v1/` directory and remains usable.
 
 ## License
 

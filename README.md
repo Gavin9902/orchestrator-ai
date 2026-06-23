@@ -1,111 +1,109 @@
 [English](README_EN.md) | **中文**
 
-# Orchestrator
+# Orchestrator v2.0 · Worker-Checker Couple
 
-一个 Claude Code skill。让 AI 产出可靠结果——把生产、盲审、判分拆成三个独立 Worker。不让任何 AI 同时当运动员和裁判。
+> AI 质量保障系统 2.0。把 v1 的「一个 Worker 做全部」升级为「多个 Worker-Checker Couple 并行协作」。
+> Worker 间文件交接，loop.py 纯代码调度，三层防作弊。
 
-> "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。vibe coding 发明者。
+> "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。
 >
-> "AI 能搞定 70%，剩下 30% 一样难。信任度在下降。" — **Addy Osmani**，Google Chrome 工程总监。
->
-> "花在修 AI bug 上的时间比自己写还多。" — Stack Overflow 2025 调查，信任度 40% → **29%**。
+> "AI 能搞定 70%，剩下 30% 一样难。" — **Addy Osmani**，Google Chrome 工程总监。
 
 **问题不在模型不够强。在没人帮模型检查。**
 
 ![Orchestrator Pitch](pitch.gif)
 
-> "They just don't work. It's slop." — **Andrej Karpathy**，OpenAI 联合创始人。vibe coding 发明者。
->
-> "AI 能搞定 70%，剩下 30% 一样难。信任度在下降。" — **Addy Osmani**，Google Chrome 工程总监。
->
-> "花在修 AI bug 上的时间比自己写还多。" — Stack Overflow 2025 调查，信任度 40% → **29%**。
+## v2.0 vs v1.0
 
-**问题不在模型不够强。在没人帮模型检查。**
+| 维度 | v1.0 | v2.0 |
+|------|------|------|
+| Worker 粒度 | 一个 Worker 做全部 | 拆成多个最小 Couple |
+| 调度层 | Orch 直接调度 | loop.py 生成指令 → Orch 机械执行 |
+| 任务拆解 | Orch 拆 | PM Couple 拆 |
+| 并行 | 不支持 | 同层 Couple 并行 |
+| 文件交接 | 无要求 | 强制文件路径传递 |
+| Orch 权限 | 全权 | 只做翻译 + 机械传递 + 展示 |
+| 防作弊 | 基础 | 三层防御（魔法叙事 + 结构隔离 + 代码校验） |
+| 多平台 | Claude Code | CodeBuddy / Claude Code / Codex CLI / 通用 |
 
-## 你会得到什么
+## 核心理念
 
-描述需求。Orch 拆解，生产 Agent 干活，检查 Agent 盲审打分，代码判官（`judge.py`）决定过不过。没过就反馈回生产重来。你只做最后确认。
+> 一个 Worker 只做一类事、只用一个能力、只通过文件交接。
 
-- **生产 Agent** — 执行任务，不知道验收标准
-- **检查 Agent** — 对照检查项打分，不知道及格线
-- **判官（纯 Python）** — 拿打分结果比对硬性条件，决定过不过
-- **自动重试** — 失败反馈回生产，最多 3 轮
-- **Agent Monitor** — 默认启动，实时监控进度
-- **完整审计** — 每轮产出、打分、判定全落盘
-- **多模态** — 接入外部视觉模型检查图片/UI/截图
+```
+用户 → Orch（信使）→ loop.py（建筑师）→ 并行 Couple 群
+                                          ├── Couple A: 生产 Worker → 检查 Worker → judge.py
+                                          ├── Couple B: 生产 Worker → 检查 Worker → judge.py
+                                          └── Couple C: 生产 Worker → 检查 Worker → judge.py
+```
 
-## 你什么都不用管。等着确认就行。
+**信使契约**：Orch 不是被"限制"——是自愿履行契约。不能创造、不能评判、不能规划。只能传递。
+
+## 多平台支持
+
+加载 skill 时自动询问你所在的平台：
+
+| 平台 | 状态 |
+|------|------|
+| CodeBuddy | ✅ 开箱即用 |
+| Claude Code | ✅ 开箱即用 |
+| OpenAI Codex CLI | ✅ 开箱即用 |
+| 其他 / 不确定 | 🌱 自生生长（Orch 自行探测工具后映射） |
+
+## 快速开始
 
 **1. 安装**
 
-把 GitHub 链接丢给 Claude Code：
+把 GitHub 链接丢给你的 AI 编程助手：
 
 ```
-把这个 skill 安装到本地：https://github.com/Gavin9902/orchestrator-ai
+安装这个 skill：https://github.com/Gavin9902/orchestrator-ai
 ```
 
 **2. 召唤**
 
 ```
-/orchestrator
+/orch-worker-couple
 ```
+
+或触发词：`couple`、`worker-couple`、`拆任务`、`并行Worker`、`文件交接`
 
 **3. 聊需求**
 
-Orch 引导你梳理清楚要做什么、怎么算好。标准是你和 Orch 一起聊出来的。
+Orch 引导你梳理清楚要做什么。PM Couple 自动拆解任务图。
 
 **4. 等结果**
 
-Orch 后台启动 loop.py + Agent Monitor。你聊别的、问进度，都行。
+loop.py 调度并行 Couple 执行。你随时问进度。
 
 **5. 确认交付**
 
-跑完 Orch 展示结果。你点头才算交付。
+所有 Couple 通过 judge.py 判官审核后，Orch 展示结果。你点头才算交付。
 
-## 看一个例子
+## 架构文档
 
-同一个 DeepSeek V4 Flash，同一个任务：生成一周 21 餐食谱，每天热量 1800-2200 千卡，蛋白:碳水:脂肪 = 30:40:30。
+| 文档 | 内容 |
+|------|------|
+| `core/ARCHITECTURE.md` | 角色模型、防作弊体系、Worker 拆分原则 |
+| `core/PROTOCOLS.md` | 数据格式、Action 类型、状态机、loop.py 接口 |
+| `codebuddy/SKILL.md` | CodeBuddy 平台专用版 |
+| `claude-code/SKILL.md` | Claude Code 平台专用版 |
+| `codex/SKILL.md` | Codex CLI 平台专用版 |
+| `generic/SKILL.md` | 通用版（自生生长） |
 
-### 直接生成（无质检）
-
-DeepSeek 直接输出。7 天里 **1 天合格，6 天宏量比例失配**。蛋白飙到 33%，碳水和脂肪到处飘。看着像模像样，一算全崩。
-
-### /orchestrator（有盲审）
-
-生产 Worker 生成 → 检查 Worker 逐条验算热量和宏量比例 → 第 1 轮格式出错被**打回** → 反馈 → 生产 Worker 修复 → 第 2 轮 **7/7 全过**。21 餐热量算术全部吻合。
+## 防作弊三层防御
 
 ```
-              直接生成        /orchestrator
-合格天数        1/7 (14%)      7/7 (100%)
-宏量验证        6 天超标         0 天超标
-热量算术        没人算过       21 餐全对
-自知之明        无           检查 Worker 18/18 满分
+🪄 第一层 · 魔法叙事 — 信使契约 + 五步呼吸 + 冲动协议
+🔒 第二层 · 结构隔离 — 文件交接 + 上下文隔离 + 互不知晓
+🔐 第三层 · 代码校验 — action_hash + orch_receipt + checksum + .lock
 ```
 
-**同一个模型。14% → 100%。差的不在模型，在有没有盲审。**
+覆盖 20 条作弊路径，详见 `core/ARCHITECTURE.md`。
 
-## 修改设置
+## v1.0 存档
 
-直接告诉 Orch：
-
-- "生产用 Haiku，检查用 Opus"
-- "重试改成 5 轮"
-- "更新多模态 API key"
-- "显示当前配置"
-
-## 检查项设计
-
-定义"好"的标准。**尽可能量化，减少主观判断。**
-
-| ❌ 差 | ✅ 好 |
-|-------|------|
-| "代码质量好" | "变量用 snake_case，函数 ≤ 20 行，无魔法数字" |
-| "设计好看" | "卡片圆角 12px，阴影 0 2px 8px rgba(0,0,0,0.08)，断点 768px" |
-| "读起来流畅" | "平均句长 < 30 字，段落之间有关联词" |
-
-## 依赖
-
-Python 3.12+ · [Claude Code](https://claude.ai/code) CLI
+v1.0 版本（orchestrator 原版）保留在 `v1/` 目录中，仍可使用。
 
 ## License
 
