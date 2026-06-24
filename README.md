@@ -50,17 +50,60 @@
 | OpenAI Codex CLI | ✅ 开箱即用 |
 | 其他 / 不确定 | 🌱 自生生长（Orch 自行探测工具后映射） |
 
+## 安装（3 种方式，任选其一）
+
+### 方式一：npx skills 一键安装（推荐）
+
+适用所有支持 Agent Skills 规范的 AI 编程助手（Claude Code / CodeBuddy / Codex / Cursor 等 68+ 平台）：
+
+```bash
+npx skills add Gavin9902/orchestrator-ai
+```
+
+安装特定平台版本（可选）：
+
+```bash
+# 只要 CodeBuddy 版
+npx skills add Gavin9902/orchestrator-ai --skill orch-worker-couple
+
+# 只要 Claude Code 版
+npx skills add Gavin9902/orchestrator-ai --skill orch-worker-couple-claude
+```
+
+> `npx skills` 是 [Vercel Labs](https://github.com/vercel-labs/skills) 开源的 skill 管理工具。如果没有安装，运行时会自动下载。
+
+### 方式二：CodeBuddy 技能市场（SkillHub）
+
+1. 打开 CodeBuddy → 左侧「技能市场」
+2. 搜索 **`orch-worker-couple`**
+3. 点击「添加」一键安装
+
+或者访问 [skillhub.cn](https://skillhub.cn) 直接安装。
+
+### 方式三：自然语言安装
+
+在任何 AI 编程助手中输入：
+
+```
+帮我安装这个 skill：https://github.com/Gavin9902/orchestrator-ai
+```
+
+AI 会自动拉取并安装到本地。
+
+### 方式四：手动安装
+
+```bash
+git clone https://github.com/Gavin9902/orchestrator-ai.git
+cp -r orchestrator-ai ~/.codebuddy/skills/orch-worker-couple/
+```
+
+---
+
 ## 快速开始
 
-**1. 安装**
+**1. 召唤**
 
-把 GitHub 链接丢给你的 AI 编程助手：
-
-```
-安装这个 skill：https://github.com/Gavin9902/orchestrator-ai
-```
-
-**2. 召唤**
+在 AI 助手中输入：
 
 ```
 /orch-worker-couple
@@ -68,15 +111,17 @@
 
 或触发词：`couple`、`worker-couple`、`拆任务`、`并行Worker`、`文件交接`
 
-**3. 聊需求**
+首次加载时会自动询问你所在的平台。
+
+**2. 聊需求**
 
 Orch 引导你梳理清楚要做什么。PM Couple 自动拆解任务图。
 
-**4. 等结果**
+**3. 等结果**
 
 loop.py 调度并行 Couple 执行。你随时问进度。
 
-**5. 确认交付**
+**4. 确认交付**
 
 所有 Couple 通过 judge.py 判官审核后，Orch 展示结果。你点头才算交付。
 

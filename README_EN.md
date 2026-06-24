@@ -50,17 +50,60 @@ The skill auto-detects your platform on load:
 | OpenAI Codex CLI | ✅ Ready |
 | Other / Unknown | 🌱 Self-growing (Orch probes tools and maps dynamically) |
 
-## Quick Start
+## Installation (4 ways, pick one)
 
-**1. Install**
+### Method 1: npx skills (Recommended)
 
-Give the GitHub link to your AI coding assistant:
+Works on all 68+ Agent Skills-compatible AI coding assistants (Claude Code / CodeBuddy / Codex / Cursor etc.):
+
+```bash
+npx skills add Gavin9902/orchestrator-ai
+```
+
+Install specific platform versions (optional):
+
+```bash
+# CodeBuddy only
+npx skills add Gavin9902/orchestrator-ai --skill orch-worker-couple
+
+# Claude Code only
+npx skills add Gavin9902/orchestrator-ai --skill orch-worker-couple-claude
+```
+
+> `npx skills` is the open-source skill manager by [Vercel Labs](https://github.com/vercel-labs/skills). It auto-downloads if not already installed.
+
+### Method 2: CodeBuddy SkillHub Marketplace
+
+1. Open CodeBuddy → "Skill Marketplace" on the left
+2. Search for **`orch-worker-couple`**
+3. Click "Add" to install
+
+Or visit [skillhub.cn](https://skillhub.cn) to install directly.
+
+### Method 3: Natural Language
+
+In any AI coding assistant, type:
 
 ```
 Install this skill: https://github.com/Gavin9902/orchestrator-ai
 ```
 
-**2. Summon**
+The AI will auto-fetch and install it locally.
+
+### Method 4: Manual Install
+
+```bash
+git clone https://github.com/Gavin9902/orchestrator-ai.git
+cp -r orchestrator-ai ~/.codebuddy/skills/orch-worker-couple/
+```
+
+---
+
+## Quick Start
+
+**1. Summon**
+
+In your AI assistant:
 
 ```
 /orch-worker-couple
@@ -68,15 +111,17 @@ Install this skill: https://github.com/Gavin9902/orchestrator-ai
 
 Or trigger words: `couple`, `worker-couple`, `parallel Worker`
 
-**3. Talk through requirements**
+On first load, it will auto-ask which platform you're on.
+
+**2. Talk through requirements**
 
 Orch guides you through clarifying what needs to be done. PM Couple auto-decomposes the task graph.
 
-**4. Wait**
+**3. Wait**
 
 loop.py schedules parallel Couples. Check progress anytime.
 
-**5. Approve**
+**4. Approve**
 
 All Couples pass judge.py review → Orch presents results. Nothing is delivered until you confirm.
 
