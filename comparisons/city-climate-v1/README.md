@@ -25,11 +25,14 @@
 | **工具栏** | 隐藏（简洁） | 显示（可截图、缩放） |
 | **背景** | 纯色深色 `#0f172a` | 渐变深色 + 毛玻璃卡片效果 |
 
-## 截图
+## 素材文件
 
-| Baseline | Orch Worker-Couple |
-|----------|-------------------|
-| ![Baseline](./baseline.png) | ![Orch](./orch.png) |
+| 类型 | Baseline | Orch Worker-Couple |
+|------|----------|-------------------|
+| 截图 | ![baseline.png](./baseline.png) | ![orch.png](./orch.png) |
+| 交互动图 | ![baseline.gif](./baseline.gif) | ![orch.gif](./orch.gif) |
+| 源文件 | [`baseline.html`](./baseline.html) | [`orch-output.html`](./orch-output.html) |
+| Spec | — | [`spec.json`](./spec.json) |
 
 ## 关键差异分析
 
